@@ -1,3 +1,5 @@
 *.prg
 *.sym
 .directory
+res/songs-sid/*.sid
+res/songs-sid/*.lz4
