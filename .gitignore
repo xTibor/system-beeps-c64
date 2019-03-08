@@ -1,5 +1,5 @@
 *.prg
 *.sym
 .directory
-res/songs-sid/*.sid
+res/songs-sid/*.bin
 res/songs-sid/*.lz4
