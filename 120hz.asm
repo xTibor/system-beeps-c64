@@ -6,25 +6,24 @@
         #import "irq.asm"
         #import "error.asm"
         #import "player.asm"
-        #import "lz4.asm"
+        #import "lzss.asm"
 
 start:
-        lda #<lz4_song_data;  sta lz4_src
-        lda #>lz4_song_data;  sta lz4_src + 1
+        lda #<lzss_song_data;  sta lzss_source
+        lda #>lzss_song_data;  sta lzss_source + 1
 
-        lda #<raw_song_data;  sta lz4_dst
-        lda #>raw_song_data;  sta lz4_dst + 1
+        lda #<raw_song_data;  sta lzss_target
+        lda #>raw_song_data;  sta lzss_target + 1
 
-        jsr lz4_decompress
+        jsr lzss_decompress
 
         jsr player_init
         jsr irq_init
         jmp *
 
-        * = $2000 "Song data"
-raw_song_data:
-        .import binary "res/songs-sid/sqw.bin"
+        .align $0100
+lzss_song_data:
+        .import binary "res/songs-sid/dld.lzss"
 
-        * = $8000 "Compressed data"
-lz4_song_data:
-        .import binary "res/songs-sid/sqw.lz4"
+        * = $8000
+raw_song_data:

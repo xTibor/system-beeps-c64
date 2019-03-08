@@ -18,11 +18,9 @@ player_init:
         sta player_wait
         sta player_loop_found
         sta player_loop_position
-        sta player_loop_position +1
+        sta player_loop_position + 1
 
         rts
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 player_update:
         lda player_wait
@@ -74,20 +72,16 @@ player_update_handle_loop:
         beq player_update_set_loop
 
         // Jump to loop
-        lda player_loop_position
-        sta player_position
-        lda player_loop_position + 1
-        sta player_position + 1
+        lda player_loop_position;     sta player_position
+        lda player_loop_position + 1; sta player_position + 1
         rts
 
 player_update_set_loop:
         lda #$01
         sta player_loop_found
 
-        lda player_position
-        sta player_loop_position
-        lda player_position + 1
-        sta player_loop_position + 1
+        lda player_position;      sta player_loop_position
+        lda player_position + 1;  sta player_loop_position + 1
         rts
 
 player_update_handle_exit:
