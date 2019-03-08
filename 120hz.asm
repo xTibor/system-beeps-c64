@@ -218,4 +218,4 @@ player_update_end:
 
         * = $1300 "Song data"
 song_data:
-        .import binary "res-sid/pxl.bin"
+        .import binary "res/songs-sid/txr.bin"
