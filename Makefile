@@ -1,6 +1,6 @@
 KICKASS=~/git/kickass/kickass.jar
-#EMULATOR=~/Downloads/C64Debugger
-EMULATOR=x64
+EMULATOR=~/Downloads/C64Debugger
+#EMULATOR=x64
 
 .PHONY: clean
 

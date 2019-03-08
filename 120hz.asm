@@ -77,7 +77,9 @@ irq_handler:
         sta $D019
         // ---
 
+        inc $D020
         jsr player_update
+        dec $D020
 
         // Set the next scanline trigger
         ldx irq_scanline_index
@@ -107,6 +109,8 @@ irq_handler:
         * = $1200 "Player"
         .label player_position = $10
         .label player_wait = $12
+        .label player_loop_found = $13
+        .label player_loop_position = $14
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -125,19 +129,15 @@ player_init:
 
         lda #$00
         sta player_wait
+        sta player_loop_found
+        sta player_loop_position
+        sta player_loop_position +1
 
         rts
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 player_update:
-        // Decoration
-        lda irq_scanline_index
-        and #$01
-        ora #$0E
-        sta $D020
-        // ---
-
         lda player_wait
         cmp #$00
         beq player_update_step
@@ -153,9 +153,9 @@ player_update_step:
         inc16(player_position)
 
         cmp #$FF
-        beq player_update_set_loop
+        beq player_update_handle_loop
         cmp #$00
-        beq player_update_set_exit
+        beq player_update_handle_exit
 
         lda (player_position), y
         sta $D400
@@ -179,14 +179,31 @@ player_update_step:
         // ---
         rts
 
-player_update_set_loop:
+player_update_handle_loop:
         lda #$00
         sta player_wait
-        // TODO
-        // ---
+
+        lda player_loop_found
+        beq player_update_set_loop
+
+        // Jump to loop
+        lda player_loop_position
+        sta player_position
+        lda player_loop_position + 1
+        sta player_position + 1
         rts
 
-player_update_set_exit:
+player_update_set_loop:
+        lda #$01
+        sta player_loop_found
+
+        lda player_position
+        sta player_loop_position
+        lda player_position + 1
+        sta player_loop_position + 1
+        rts
+
+player_update_handle_exit:
         // TODO
 !:
         inc $0401
