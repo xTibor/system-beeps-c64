@@ -1,9 +1,10 @@
 [package]
-name = "pit2sid"
+name = "tools"
 version = "0.1.0"
 authors = ["Tibor Nagy <xnagytibor@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-structopt = "0.2"
 gba-compression = { git = "https://github.com/xtibor/gba-compression.git" }
+image = "0.21"
+structopt = "0.2"

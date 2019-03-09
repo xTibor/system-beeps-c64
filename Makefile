@@ -6,6 +6,10 @@ PIT_BINS := $(wildcard res/songs-pit/*.bin)
 SID_BINS := $(patsubst res/songs-pit/%.bin, res/songs-sid/%.bin, $(PIT_BINS))
 SID_BINS_LZ77 := $(patsubst res/songs-pit/%.bin, res/songs-sid/%.lz77, $(PIT_BINS))
 
+FONT_PNGS := $(wildcard res/fonts/*.png)
+FONT_64CS := $(patsubst res/fonts/%.png, res/fonts/%.64c, $(FONT_PNGS))
+FONT_64CS_LZ77 := $(patsubst res/fonts/%.png, res/fonts/%.lz77, $(FONT_PNGS))
+
 SOURCES := $(wildcard *.asm)
 
 .PHONY: clean
@@ -16,7 +20,13 @@ res/songs-sid/%.bin: res/songs-pit/%.bin
 res/songs-sid/%.lz77: res/songs-sid/%.bin
 	cargo run --manifest-path ./tools/Cargo.toml --bin lz77 -- --input $< --output $@
 
-120hz.prg: $(SOURCES) $(SID_BINS_LZ77) $(SID_BINS)
+res/fonts/%.64c: res/fonts/%.png
+	cargo run --manifest-path ./tools/Cargo.toml --bin img2font -- --input $< --output $@
+
+res/fonts/%.lz77: res/fonts/%.64c
+	cargo run --manifest-path ./tools/Cargo.toml --bin lz77 -- --input $< --output $@
+
+120hz.prg: $(SOURCES) $(SID_BINS_LZ77) $(SID_BINS) $(FONT_64CS) $(FONT_64CS_LZ77)
 	java -jar $(KICKASS) 120hz.asm
 
 run: 120hz.prg
@@ -26,3 +36,5 @@ clean:
 	rm 120hz.prg 120hz.sym
 	rm $(SID_BINS)
 	rm $(SID_BINS_LZ77)
+	rm $(FONT_64CS)
+	rm $(FONT_64CS_LZ77)

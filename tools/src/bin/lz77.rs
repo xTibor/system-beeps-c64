@@ -1,6 +1,7 @@
 use std::fs;
-use structopt::StructOpt;
+
 use gba_compression::bios::compress_lz77;
+use structopt::StructOpt;
 
 #[derive(StructOpt, Debug)]
 #[structopt(name = "lz77")]
