@@ -51,14 +51,21 @@ player_update_step:
         inc16(player_position)
 
         // Set SID registers
+        // ADSR
         lda #$00
         sta $D405
         lda #$F0
         sta $D406
 
-        lda #$11
+        // Square wave with 50% duty
+        lda #$41
         sta $D404
+        lda #$00
+        sta $d402
+        lda #$08
+        sta $d403
 
+        // Master volume to max
         lda #$0F
         sta $D418
         // ---

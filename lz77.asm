@@ -16,13 +16,10 @@ lz77_error_02:
 
         .encoding "screencode_upper"
 lz77_errorstr_01:
-        .text "NOT AN LZ77 STREAM"
+        .text "NOT A GBA-LZ77 STREAM"
         .byte $00
 lz77_errorstr_02:
         .text "SIZE GREATER THAN $FFFF"
-        .byte $00
-lz77_errorstr_03:
-        .text "UNIMPLEMENTED"
         .byte $00
 
 lz77_decompress:
@@ -101,8 +98,6 @@ lz77_process_reference:
         lda lz77_target + 1
         sbc lz77_reference_offset + 1
         sta lz77_reference_start + 1
-
-        //jmp *
 
         // Copy the reference
 !:
