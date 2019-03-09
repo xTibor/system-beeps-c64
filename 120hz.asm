@@ -6,24 +6,25 @@
         #import "irq.asm"
         #import "error.asm"
         #import "player.asm"
-        #import "lzss.asm"
+        #import "lz77.asm"
 
 start:
-        lda #<lzss_song_data;  sta lzss_source
-        lda #>lzss_song_data;  sta lzss_source + 1
+        lda #<lz77_song_data;  sta lz77_source
+        lda #>lz77_song_data;  sta lz77_source + 1
 
-        lda #<raw_song_data;  sta lzss_target
-        lda #>raw_song_data;  sta lzss_target + 1
+        lda #<raw_song_data;  sta lz77_target
+        lda #>raw_song_data;  sta lz77_target + 1
 
-        jsr lzss_decompress
+        //jsr lz77_decompress
 
         jsr player_init
         jsr irq_init
         jmp *
 
         .align $0100
-lzss_song_data:
-        .import binary "res/songs-sid/dld.lzss"
+lz77_song_data:
+        .import binary "res/songs-sid/txr.lz77"
 
-        * = $8000
+        * = $4000
 raw_song_data:
+        .import binary "res/songs-sid/txr.bin"

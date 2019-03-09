@@ -6,3 +6,4 @@ edition = "2018"
 
 [dependencies]
 structopt = "0.2"
+gba-compression = { git = "https://github.com/xtibor/gba-compression.git" }

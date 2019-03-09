@@ -28,7 +28,7 @@ irq_init:
         lda #$1B
         sta $D011
 
-        // Unmap BASIC and KERNAL
+        // Unmap BASIC and KERNAL (TODO: before decompression)
         lda #$35
         sta $01
 

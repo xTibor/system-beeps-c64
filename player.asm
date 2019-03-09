@@ -86,10 +86,14 @@ player_update_set_loop:
 
 player_update_handle_exit:
         // TODO
-        lda #$00
-        jsr raise_error
+        raise_error(player_error_01)
         // ---
         rts
 
 player_update_end:
         rts
+
+        .encoding "screencode_upper"
+player_error_01:
+        .text "UNIMPLEMENTED"
+        .byte $00

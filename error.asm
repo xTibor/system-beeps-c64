@@ -1,27 +1,12 @@
-        .label error_string_pointer = $20
+        .label error_str = $18
 
-error_strings_lo:
-        .byte <error_string_00
-        .byte <error_string_01
-error_strings_hi:
-        .byte >error_string_00
-        .byte >error_string_01
+.macro raise_error(arg_str) {
+        lda #<arg_str;  sta error_str
+        lda #>arg_str;  sta error_str + 1
+        jsr do_raise_error
+}
 
-        .encoding "screencode_upper"
-error_string_00:
-        .text "UNIMPLEMENTED FEATURE"
-        .byte $00
-error_string_01:
-        .text "BOJLER ELADO"
-        .byte $00
-
-        // A = error code
-raise_error:
-        // Retrieve string pointer from error code
-        tax
-        lda error_strings_lo, x;  sta error_string_pointer
-        lda error_strings_hi, x;  sta error_string_pointer + 1
-
+do_raise_error:
         // Set red border
         lda #$02
         sta $D020
@@ -50,7 +35,7 @@ raise_error:
         // Print error message
         ldy #$00
 !:
-        lda (error_string_pointer), y
+        lda (error_str), y
         beq !+
         sta $0400, y
         iny
@@ -58,6 +43,4 @@ raise_error:
 !:
 
         // Halt
-!:
-        inc $07E7
-        jmp !-
+        jmp *
