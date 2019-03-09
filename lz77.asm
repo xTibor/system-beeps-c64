@@ -67,6 +67,7 @@ lz77_process_uncompressed:
         inc16(lz77_source)
         sta (lz77_target), y
         inc16(lz77_target)
+        dec16(lz77_decompressed_size)
         jmp lz77_process_block_loop_next
 
 lz77_process_reference:
@@ -83,22 +84,37 @@ lz77_process_reference:
         inc lz77_reference_length
 
         // Read reference offset MSB
+        and #$0F
         sta lz77_reference_offset + 1
-        and #$F0
 
-        // Read reference LSB
+        // Read reference offset LSB
         lda (lz77_source), y
         inc16(lz77_source)
-        inc lz77_reference_offset
+        sta lz77_reference_offset
         inc16(lz77_reference_offset)
 
+        // Calculate start address of reference
+        sec
+        lda lz77_target
+        sbc lz77_reference_offset
+        sta lz77_reference_start
+        lda lz77_target + 1
+        sbc lz77_reference_offset + 1
+        sta lz77_reference_start + 1
 
+        //jmp *
 
-        // TODO
-
+        // Copy the reference
+!:
+        lda (lz77_reference_start), y
+        inc16(lz77_reference_start)
+        sta (lz77_target), y
+        inc16(lz77_target)
+        dec16(lz77_decompressed_size)
+        dec lz77_reference_length
+        bne !-
 
 lz77_process_block_loop_next:
-        dec16(lz77_decompressed_size)
         lda #$00
         cmp lz77_decompressed_size
         bne !+
@@ -107,71 +123,7 @@ lz77_process_block_loop_next:
         rts
 !:
         dec lz77_block_remaining_bits
-        bne lz77_process_block_loop
+        bne !+
         jmp lz77_read_block
-
-
-
-
-
-
-/*
-        .label lz77_backref = $54
-
-lz77_decompress:
-        ldy #$00
-        lda (lz77_source), y
-        tay
-        inc16(lz77_source)
-        tya
-        beq !done+
-        bmi !backreference+
-
-!uncompressed:
-        // Uncompressed when (token and $80) == $00
-        tax // Byte count in X
-        ldy #$00
 !:
-        lda (lz77_source), y
-        sta (lz77_target), y
-        inc16(lz77_source)
-        inc16(lz77_target)
-        dex
-        bne !-
-
-        jmp lz77_decompress
-
-!backreference:
-        // Backreference when (token and $80) == $80
-        and #$7F
-        // X = byte count
-        tax
-
-        // lz77_backref = lz77_target
-        lda lz77_target;      sta lz77_backref
-        lda lz77_target + 1;  sta lz77_backref + 1
-
-        // A = back offset
-        ldy #$00
-        lda (lz77_source), y
-        inc16(lz77_source)
-
-        // lz77_backref -= back offset
-        sec
-        sbc lz77_backref
-        bcs !+
-        dec lz77_backref + 1
-!:
-        lda (lz77_backref), y
-        sta (lz77_target), y
-        inc16(lz77_backref)
-        inc16(lz77_target)
-        dex
-        bne !-
-
-        jmp lz77_decompress
-
-!done:
-        // Done when token == $00
-        rts
-*/
+        jmp lz77_process_block_loop

@@ -15,7 +15,7 @@ start:
         lda #<raw_song_data;  sta lz77_target
         lda #>raw_song_data;  sta lz77_target + 1
 
-        //jsr lz77_decompress
+        jsr lz77_decompress
 
         jsr player_init
         jsr irq_init
@@ -23,8 +23,8 @@ start:
 
         .align $0100
 lz77_song_data:
-        .import binary "res/songs-sid/txr.lz77"
+        .import binary "res/songs-sid/sqw.lz77"
 
         * = $4000
 raw_song_data:
-        .import binary "res/songs-sid/txr.bin"
+        //.import binary "res/songs-sid/txr.bin"
