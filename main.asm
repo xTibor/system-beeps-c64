@@ -1,6 +1,3 @@
-        .segment MAIN []
-        BasicUpstart2(start)
-
         #import "macros.asm"
         #import "irq.asm"
         #import "error.asm"
@@ -25,7 +22,7 @@ start:
         // LZ77 song data needs 4KiB
         * = $2000
 lz77_song_data:
-        .import binary "res/songs-sid/sys.lz77"
+        //.import binary "res/songs-sid/sys.lz77"
         //.import binary "res/songs-sid/tmb.lz77"
         //.import binary "res/songs-sid/btl.lz77"
         //.import binary "res/songs-sid/mnc.lz77"
