@@ -105,7 +105,7 @@ lz77_process_reference:
         inc16(lz77_reference_start)
         sta (lz77_target), y
         inc16(lz77_target)
-        dec16(lz77_decompressed_size)
+        dec16(lz77_decompressed_size)   // TODO: Before the loop: lz77_decompressed_size -= lz77_reference_length
         dec lz77_reference_length
         bne !-
 

@@ -4,13 +4,6 @@
         .label player_loop_position = $14
 
 player_init:
-        // Decoration
-        lda #$53
-        sta $0400
-        lda #$02
-        sta $D800
-        // ---
-
         lda #<raw_song_data;  sta player_position
         lda #>raw_song_data;  sta player_position + 1
 

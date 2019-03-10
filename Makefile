@@ -10,6 +10,9 @@ FONT_PNGS := $(wildcard res/fonts/*.png)
 FONT_64CS := $(patsubst res/fonts/%.png, res/fonts/%.64c, $(FONT_PNGS))
 FONT_64CS_LZ77 := $(patsubst res/fonts/%.png, res/fonts/%.lz77, $(FONT_PNGS))
 
+TEXT_BINS := $(wildcard res/texts/*.bin)
+TEXT_BINS_LZ77 := $(patsubst res/texts/%.bin, res/texts/%.lz77, $(TEXT_BINS))
+
 SOURCES := $(wildcard *.asm)
 
 .PHONY: clean
@@ -26,7 +29,10 @@ res/fonts/%.64c: res/fonts/%.png
 res/fonts/%.lz77: res/fonts/%.64c
 	cargo run --manifest-path ./tools/Cargo.toml --bin lz77 -- --input $< --output $@
 
-120hz.prg: $(SOURCES) $(SID_BINS_LZ77) $(SID_BINS) $(FONT_64CS) $(FONT_64CS_LZ77)
+res/texts/%.lz77: res/texts/%.bin
+	cargo run --manifest-path ./tools/Cargo.toml --bin lz77 -- --input $< --output $@
+
+120hz.prg: $(SOURCES) $(SID_BINS_LZ77) $(SID_BINS) $(FONT_64CS) $(FONT_64CS_LZ77) $(TEXT_BINS) $(TEXT_BINS_LZ77)
 	java -jar $(KICKASS) 120hz.asm
 
 run: 120hz.prg
@@ -38,3 +44,4 @@ clean:
 	rm $(SID_BINS_LZ77)
 	rm $(FONT_64CS)
 	rm $(FONT_64CS_LZ77)
+	rm $(TEXT_BINS_LZ77)

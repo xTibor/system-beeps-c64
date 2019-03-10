@@ -56,9 +56,13 @@ irq_handler:
         sta $D019
         // ---
 
-        inc $D020
+        lda #$0B
+        sta $D020
+
         jsr player_update
-        dec $D020
+
+        lda #$00
+        sta $D020
 
         // Set the next scanline trigger
         ldx irq_scanline_index
