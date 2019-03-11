@@ -1,51 +1,53 @@
         #importonce
         #import "macros.asm"
-        #import "memorymap.asm"
+        #import "mem.asm"
 
-        .label player_position = $10
-        .label player_wait = $12
-        .label player_loop_found = $13
-        .label player_loop_position = $14
+        .filenamespace player
 
-player_init:
-        lda #<raw_song_data;  sta player_position
-        lda #>raw_song_data;  sta player_position + 1
+        .label position = $10
+        .label wait = $12
+        .label loop_found = $13
+        .label loop_position = $14
+
+init:
+        lda #<mem.raw_song_data;  sta position
+        lda #>mem.raw_song_data;  sta position + 1
 
         lda #$00
-        sta player_wait
-        sta player_loop_found
-        sta player_loop_position
-        sta player_loop_position + 1
+        sta wait
+        sta loop_found
+        sta loop_position
+        sta loop_position + 1
 
         rts
 
-player_update:
-        lda player_wait
+update:
+        lda wait
         cmp #$00
-        beq player_update_step
-        dec player_wait
-        beq player_update_step
+        beq update_step
+        dec wait
+        beq update_step
         rts
 
-player_update_step:
+update_step:
         ldy #$00
-        lda (player_position), y
-        sta player_wait
+        lda (position), y
+        sta wait
 
-        inc16(player_position)
+        inc16(position)
 
         cmp #$FF
-        beq player_update_handle_loop
+        beq update_handle_loop
         cmp #$00
-        beq player_update_handle_exit
+        beq update_handle_exit
 
-        lda (player_position), y
+        lda (position), y
         sta $D400
-        inc16(player_position)
+        inc16(position)
 
-        lda (player_position), y
+        lda (position), y
         sta $D401
-        inc16(player_position)
+        inc16(position)
 
         // Set SID registers
         // ADSR
@@ -68,35 +70,31 @@ player_update_step:
         // ---
         rts
 
-player_update_handle_loop:
+update_handle_loop:
         lda #$00
-        sta player_wait
+        sta wait
 
-        lda player_loop_found
-        beq player_update_set_loop
+        lda loop_found
+        beq update_set_loop
 
         // Jump to loop
-        lda player_loop_position;     sta player_position
-        lda player_loop_position + 1; sta player_position + 1
+        lda loop_position;     sta position
+        lda loop_position + 1; sta position + 1
         rts
 
-player_update_set_loop:
+update_set_loop:
         lda #$01
-        sta player_loop_found
+        sta loop_found
 
-        lda player_position;      sta player_loop_position
-        lda player_position + 1;  sta player_loop_position + 1
+        lda position;      sta loop_position
+        lda position + 1;  sta loop_position + 1
         rts
 
-player_update_handle_exit:
+update_handle_exit:
         // TODO
-        //raise_error(player_error_01)
+        //raise_error(error_01)
         // ---
         rts
 
-player_update_end:
+update_end:
         rts
-
-//        .encoding "petscii_upper"
-//player_error_01:
-//        .text @"Unimplemented\$00"

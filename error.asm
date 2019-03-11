@@ -1,13 +1,16 @@
         #importonce
-        #import "memorymap.asm"
+        #import "mem.asm"
 
-        .label error_str = $18
-
+        // TODO: Move this under the error namespace
 .macro raise_error(arg_str) {
-        lda #<arg_str;  sta error_str
-        lda #>arg_str;  sta error_str + 1
-        jsr do_raise_error
+        lda #<arg_str;  sta error.string
+        lda #>arg_str;  sta error.string + 1
+        jsr error.do_raise_error
 }
+
+        .filenamespace error
+
+        .label string = $18
 
 do_raise_error:
         // Set red border
@@ -22,28 +25,27 @@ do_raise_error:
 !loop:
         // Fill screen RAM with spaces
         lda #$20
-        sta raw_text_data + $0000, x
-        sta raw_text_data + $0100, x
-        sta raw_text_data + $0200, x
-        sta raw_text_data + $0300, x
+        sta mem.raw_text_data + $0000, x
+        sta mem.raw_text_data + $0100, x
+        sta mem.raw_text_data + $0200, x
+        sta mem.raw_text_data + $0300, x
         // Fill color RAM with red
         lda #$02
-        sta color_data + $0000, x
-        sta color_data + $0100, x
-        sta color_data + $0200, x
-        sta color_data + $0300, x
+        sta mem.color_data + $0000, x
+        sta mem.color_data + $0100, x
+        sta mem.color_data + $0200, x
+        sta mem.color_data + $0300, x
         inx
         bne !loop-
 
         // Print error message
         ldy #$00
 !loop:
-        lda (error_str), y
+        lda (string), y
         beq !halt+
-        sta raw_text_data, y
+        sta mem.raw_text_data, y
         iny
         jmp !loop-
 
 !halt:
-        // Halt
         jmp *

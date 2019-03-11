@@ -1,5 +1,7 @@
         #importonce
 
+        .filenamespace mem
+
         .label raw_font_data = $8000  // Size: $0800 / 2KiB
         .label raw_text_data = $8800  // Size: $0400 / 1KiB
         .label color_data = $D800     // Size: $0400 / 1KiB

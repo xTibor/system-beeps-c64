@@ -7,13 +7,15 @@
         #import "playlist.asm"
         #import "loader.asm"
 
+        .filenamespace main
+
 start:
-        jsr playlist_init
+        jsr playlist.init
 
         lda #$04
-        sta song_id
-        jsr load_song
+        sta loader.song_id
+        jsr loader.load
 
-        jsr player_init
-        jsr irq_init
+        jsr player.init
+        jsr irq.init
         jmp *

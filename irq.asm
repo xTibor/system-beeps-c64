@@ -1,15 +1,17 @@
         #importonce
         #import "player.asm" // TODO: Decouple this
 
-        .label irq_scanline_index = $08
+        .filenamespace irq
 
-irq_scanline_lo:
+        .label scanline_index = $08
+
+scanline_lo:
         .byte $00, $82, $04, $4E, $D0, $1A, $9C, $1E, $68, $EA, $34, $B6
-irq_scanline_hi:
+scanline_hi:
         // Pre-shifted to the right bit-position for binary OR-ing
         .byte $00, $00, $80, $00, $00, $00, $00, $80, $00, $00, $00, $00
 
-irq_init:
+init:
         sei
 
         // Disable CIA interrupts
@@ -36,18 +38,16 @@ irq_init:
         sta $01
 
         // Set interrupt address
-        lda #<irq_handler;  sta $FFFE
-        lda #>irq_handler;  sta $FFFF
+        lda #<handler;  sta $FFFE
+        lda #>handler;  sta $FFFF
 
         lda #$00
-        sta irq_scanline_index
+        sta scanline_index
 
         cli
         rts
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-irq_handler:
+handler:
         pha
         txa
         pha
@@ -62,23 +62,23 @@ irq_handler:
         lda #$0B
         sta $D020
 
-        jsr player_update
+        jsr player.update
 
         lda #$00
         sta $D020
 
         // Set the next scanline trigger
-        ldx irq_scanline_index
+        ldx scanline_index
         inx
         cpx #$0C
         bne !+
         ldx #$00
 !:
-        stx irq_scanline_index
+        stx scanline_index
 
-        lda irq_scanline_lo, x
+        lda scanline_lo, x
         sta $D012
-        lda irq_scanline_hi, x
+        lda scanline_hi, x
         ora #$1B
         sta $D011
         // ---

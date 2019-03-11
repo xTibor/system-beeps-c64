@@ -1,7 +1,9 @@
         #importonce
         #import "lz77.asm"
         #import "error.asm"
-        #import "memorymap.asm"
+        #import "mem.asm"
+
+        .filenamespace loader
 
         .encoding "petscii_upper"
 song_disk_names:
@@ -32,7 +34,7 @@ song_disk_names:
 song_id:
         .byte $00
 
-load_song:
+load:
         // Set filename
         // Multiplication is kept as an u8, so the max ID it can handle is 85
         lda song_id
@@ -63,17 +65,17 @@ load_song:
 
         lda #$00      // Load to memory (not verify)
         jsr $FFD5     // Call LOAD
-        bcs !handle_errors+   // If carry set, a load error has happened
+        bcs !handle_error+   // If carry set, a load error has happened
 
-        lda #<lz77_song_data;  sta lz77_source
-        lda #>lz77_song_data;  sta lz77_source + 1
-        lda #<raw_song_data;   sta lz77_target
-        lda #>raw_song_data;   sta lz77_target + 1
-        jsr lz77_decompress
+        lda #<mem.lz77_song_data;  sta lz77.source
+        lda #>mem.lz77_song_data;  sta lz77.source + 1
+        lda #<mem.raw_song_data;   sta lz77.target
+        lda #>mem.raw_song_data;   sta lz77.target + 1
+        jsr lz77.decompress
 
         rts
 
-!handle_errors:
+!handle_error:
         cmp #$00
         beq error_00
         cmp #$04
@@ -82,25 +84,25 @@ load_song:
         beq error_05
         cmp #$1D
         beq error_1D
-        raise_error(loader_errorstr_unknown)
+        raise_error(errorstr_unknown)
 
 error_00:
-        raise_error(loader_errorstr_00)
+        raise_error(errorstr_00)
 error_04:
-        raise_error(loader_errorstr_04)
+        raise_error(errorstr_04)
 error_05:
-        raise_error(loader_errorstr_05)
+        raise_error(errorstr_05)
 error_1D:
-        raise_error(loader_errorstr_1D)
+        raise_error(errorstr_1D)
 
         .encoding "petscii_upper"
-loader_errorstr_00:
+errorstr_00:
         .text @"Disk load error\$00"
-loader_errorstr_04:
+errorstr_04:
         .text @"File not found\$00"
-loader_errorstr_05:
+errorstr_05:
         .text @"Device not present\$00"
-loader_errorstr_1D:
+errorstr_1D:
         .text @"Load error\$00"
-loader_errorstr_unknown:
+errorstr_unknown:
         .text @"Unknown error\$00"

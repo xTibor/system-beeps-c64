@@ -2,12 +2,13 @@
         #import "irq.asm"
         #import "player.asm"
 
+        .filenamespace main
+
         BasicUpstart2(start)
 start:
-        jsr player_init
-        jsr irq_init
+        jsr player.init
+        jsr irq.init
         jmp *
 
-//raw_song_data:
-        * = raw_song_data
-        .import binary "res/songs-sid/aon.bin"
+        * = mem.raw_song_data
+        .import binary "res/songs-sid/sqw.bin"
