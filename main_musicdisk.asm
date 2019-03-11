@@ -17,8 +17,3 @@ start:
         jsr player_init
         jsr irq_init
         jmp *
-
-        .align $0100
-        // LZ77 song data needs 4KiB
-        .label lz77_song_data = *
-        .label raw_song_data = * + $1000

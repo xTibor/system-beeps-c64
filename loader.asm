@@ -1,7 +1,7 @@
         #importonce
         #import "lz77.asm"
         #import "error.asm"
-        #import "main.asm" // TODO: Decouple this
+        #import "memorymap.asm"
 
         .encoding "petscii_upper"
 song_disk_names:

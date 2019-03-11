@@ -1,6 +1,6 @@
 .segment MAIN []
 BasicUpstart2(start)
-#import "main.asm"
+#import "main_musicdisk.asm"
 
 .segment SONG_SYS []
 * = lz77_song_data
@@ -94,7 +94,7 @@ BasicUpstart2(start)
 * = lz77_song_data
 .import binary "res/songs-sid/aon.lz77"
 
-.disk [filename="120hz.d64", name="SYSTEM BEEPS", id="2021!" ] {
+.disk [filename="musicdisk.d64", name="SYSTEM BEEPS", id="2021!" ] {
         [ name="SYSTEM BEEPS",     type="prg", segments="MAIN"     ],
         [ name="----------------", type="rel"                      ],
         [ name="SYS",              type="prg", segments="SONG_SYS" ],

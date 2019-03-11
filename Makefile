@@ -32,14 +32,14 @@ res/fonts/%.lz77: res/fonts/%.64c
 res/texts/%.lz77: res/texts/%.bin
 	cargo run --manifest-path ./tools/Cargo.toml --bin lz77 -- --input $< --output $@
 
-120hz.d64: $(SOURCES) $(SID_BINS_LZ77) $(SID_BINS) $(FONT_64CS) $(FONT_64CS_LZ77) $(TEXT_BINS) $(TEXT_BINS_LZ77)
-	java -jar $(KICKASS) disk.asm
+musicdisk.d64: $(SOURCES) $(SID_BINS_LZ77) $(SID_BINS) $(FONT_64CS) $(FONT_64CS_LZ77) $(TEXT_BINS) $(TEXT_BINS_LZ77)
+	java -jar $(KICKASS) musicdisk.asm
 
-run: 120hz.d64
-	${EMULATOR} 120hz.d64
+run: musicdisk.d64
+	${EMULATOR} musicdisk.d64
 
 clean:
-	rm 120hz.d64 disk.sym
+	rm musicdisk.d64 musicdisk.sym main_standalone.prg main_standalone.sym
 	rm $(SID_BINS)
 	rm $(SID_BINS_LZ77)
 	rm $(FONT_64CS)

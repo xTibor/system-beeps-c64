@@ -1,7 +1,6 @@
         #importonce
-        #import "error.asm"
         #import "macros.asm"
-        #import "main.asm" // TODO: Decouple this
+        #import "memorymap.asm"
 
         .label player_position = $10
         .label player_wait = $12
@@ -91,13 +90,13 @@ player_update_set_loop:
 
 player_update_handle_exit:
         // TODO
-        raise_error(player_error_01)
+        //raise_error(player_error_01)
         // ---
         rts
 
 player_update_end:
         rts
 
-        .encoding "petscii_upper"
-player_error_01:
-        .text @"Unimplemented\$00"
+//        .encoding "petscii_upper"
+//player_error_01:
+//        .text @"Unimplemented\$00"

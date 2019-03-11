@@ -1,9 +1,6 @@
         #importonce
         #import "lz77.asm"
-
-        .label raw_font_data = $8000
-        .label raw_text_data = $8800
-        .label color_data = $D800
+        #import "memorymap.asm"
 
 lz77_font_data:
         .import binary "res/fonts/cga-font.lz77"

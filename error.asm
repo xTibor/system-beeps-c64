@@ -1,5 +1,5 @@
         #importonce
-        #import "main.asm" // TODO: Decouple this
+        #import "memorymap.asm"
 
         .label error_str = $18
 
