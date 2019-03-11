@@ -1,3 +1,8 @@
+        #importonce
+        #import "error.asm"
+        #import "macros.asm"
+        #import "main.asm" // TODO: Decouple this
+
         .label player_position = $10
         .label player_wait = $12
         .label player_loop_found = $13
@@ -95,5 +100,4 @@ player_update_end:
 
         .encoding "petscii_upper"
 player_error_01:
-        .text "Unimplemented"
-        .byte $00
+        .text @"Unimplemented\$00"

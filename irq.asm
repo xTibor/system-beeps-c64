@@ -1,3 +1,6 @@
+        #importonce
+        #import "player.asm" // TODO: Decouple this
+
         .label irq_scanline_index = $08
 
 irq_scanline_lo:

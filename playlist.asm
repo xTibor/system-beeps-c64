@@ -1,3 +1,6 @@
+        #importonce
+        #import "lz77.asm"
+
         .label raw_font_data = $8000
         .label raw_text_data = $8800
         .label color_data = $D800

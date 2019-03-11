@@ -1,3 +1,5 @@
+        #importonce
+
         // Clobbers N, Z
 .macro inc16(label) {
         inc label

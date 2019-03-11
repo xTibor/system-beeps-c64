@@ -1,3 +1,8 @@
+        #importonce
+        #import "lz77.asm"
+        #import "error.asm"
+        #import "main.asm" // TODO: Decouple this
+
         .encoding "petscii_upper"
 song_disk_names:
         .text "SYS"
@@ -24,26 +29,35 @@ song_disk_names:
         .text "COY"
         .text "AON"
 
-song_name_address:
-        .word $0000
+song_id:
+        .byte $00
 
-        // A = song_id
 load_song:
-        //ldx #$00
-        //stx song_name_address
-        //stx song_name_address + 1
+        // Set filename
+        // Multiplication is kept as an u8, so the max ID it can handle is 85
+        lda song_id
+        clc
+        adc song_id
+        clc
+        adc song_id
+        adc #<song_disk_names
+        tax  // X = (sond_id * 3) + #<song_disk_names
 
-        // Load LZ77 compressed song from disk to memory
-        lda #$03      // Filenames are always 3 character long
-        ldx #<song_disk_names + 3 * 22
-        ldy #>song_disk_names + 3 * 22
+        lda #>song_disk_names
+        adc #$00
+        tay  // Y = #>song_disk_names + carry
+
+        lda #$03  // Set filename length
         jsr $FFBD     // Call SETNAM
 
+        //
         lda #$01
         ldx $BA       // Last used device number
-        bne !+
+        bne !skip+
         ldx #$08      // Default to device 8
-!:
+!skip:
+
+
         ldy #$01      // not $01 means: load to address stored in file
         jsr $FFBA     // Call SETLFS
 
@@ -81,17 +95,12 @@ error_1D:
 
         .encoding "petscii_upper"
 loader_errorstr_00:
-        .text "Disk load error"
-        .byte $00
+        .text @"Disk load error\$00"
 loader_errorstr_04:
-        .text "File not found"
-        .byte $00
+        .text @"File not found\$00"
 loader_errorstr_05:
-        .text "Device not present"
-        .byte $00
+        .text @"Device not present\$00"
 loader_errorstr_1D:
-        .text "Load error"
-        .byte $00
+        .text @"Load error\$00"
 loader_errorstr_unknown:
-        .text "Unknown error"
-        .byte $00
+        .text @"Unknown error\$00"

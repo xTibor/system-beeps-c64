@@ -1,3 +1,7 @@
+        #importonce
+        #import "error.asm"
+        #import "macros.asm"
+
         .label lz77_source = $20
         .label lz77_target = $22
 
@@ -16,11 +20,9 @@ lz77_error_02:
 
         .encoding "petscii_upper"
 lz77_errorstr_01:
-        .text "NOT A GBA-LZ77 STREAM"
-        .byte $00
+        .text @"NOT A GBA-LZ77 STREAM\$00"
 lz77_errorstr_02:
-        .text "SIZE GREATER THAN $FFFF"
-        .byte $00
+        .text @"SIZE GREATER THAN $FFFF\$00"
 
 lz77_decompress:
         ldy #$00

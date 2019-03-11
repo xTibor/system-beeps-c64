@@ -1,3 +1,4 @@
+        #importonce
         #import "macros.asm"
         #import "irq.asm"
         #import "error.asm"
@@ -9,7 +10,8 @@
 start:
         jsr playlist_init
 
-        lda #$01
+        lda #$04
+        sta song_id
         jsr load_song
 
         jsr player_init
@@ -20,4 +22,3 @@ start:
         // LZ77 song data needs 4KiB
         .label lz77_song_data = *
         .label raw_song_data = * + $1000
-

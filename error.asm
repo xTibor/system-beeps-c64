@@ -1,3 +1,6 @@
+        #importonce
+        #import "main.asm" // TODO: Decouple this
+
         .label error_str = $18
 
 .macro raise_error(arg_str) {
