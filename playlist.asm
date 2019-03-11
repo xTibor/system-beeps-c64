@@ -1,5 +1,6 @@
         .label raw_font_data = $8000
         .label raw_text_data = $8800
+        .label color_data = $D800
 
 lz77_font_data:
         .import binary "res/fonts/cga-font.lz77"
@@ -14,10 +15,10 @@ playlist_init:
         ldx #$00
 !:
         lda #$0F
-        sta $D800, x
-        sta $D900, x
-        sta $DA00, x
-        sta $DB00, x
+        sta color_data + $0000, x
+        sta color_data + $0100, x
+        sta color_data + $0200, x
+        sta color_data + $0300, x
         inx
         bne !-
 

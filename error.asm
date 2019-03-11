@@ -15,32 +15,32 @@ do_raise_error:
         lda #$00
         sta $D021
 
-        // Fill screen RAM with spaces
-        // Fill color RAM with red
         ldx #$00
-!:
+!loop:
+        // Fill screen RAM with spaces
         lda #$20
-        sta $0400, x
-        sta $0500, x
-        sta $0600, x
-        sta $0700, x
+        sta raw_text_data + $0000, x
+        sta raw_text_data + $0100, x
+        sta raw_text_data + $0200, x
+        sta raw_text_data + $0300, x
+        // Fill color RAM with red
         lda #$02
-        sta $D800, x
-        sta $D900, x
-        sta $DA00, x
-        sta $DB00, x
+        sta color_data + $0000, x
+        sta color_data + $0100, x
+        sta color_data + $0200, x
+        sta color_data + $0300, x
         inx
-        bne !-
+        bne !loop-
 
         // Print error message
         ldy #$00
-!:
+!loop:
         lda (error_str), y
-        beq !+
-        sta $0400, y
+        beq !halt+
+        sta raw_text_data, y
         iny
-        jmp !-
-!:
+        jmp !loop-
 
+!halt:
         // Halt
         jmp *

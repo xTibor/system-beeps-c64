@@ -35,8 +35,8 @@ load_song:
 
         // Load LZ77 compressed song from disk to memory
         lda #$03      // Filenames are always 3 character long
-        ldx #<song_disk_names + 3 * 0
-        ldy #>song_disk_names + 3 * 0
+        ldx #<song_disk_names + 3 * 22
+        ldy #>song_disk_names + 3 * 22
         jsr $FFBD     // Call SETNAM
 
         lda #$01
@@ -49,7 +49,7 @@ load_song:
 
         lda #$00      // Load to memory (not verify)
         jsr $FFD5     // Call LOAD
-        bcs !error+   // If carry set, a load error has happened
+        bcs !handle_errors+   // If carry set, a load error has happened
 
         lda #<lz77_song_data;  sta lz77_source
         lda #>lz77_song_data;  sta lz77_source + 1
@@ -59,8 +59,39 @@ load_song:
 
         rts
 
-!error:
-    lda #$04
-    sta $d020
-    jmp *
-    rts
+!handle_errors:
+        cmp #$00
+        beq error_00
+        cmp #$04
+        beq error_04
+        cmp #$05
+        beq error_05
+        cmp #$1D
+        beq error_1D
+        raise_error(loader_errorstr_unknown)
+
+error_00:
+        raise_error(loader_errorstr_00)
+error_04:
+        raise_error(loader_errorstr_04)
+error_05:
+        raise_error(loader_errorstr_05)
+error_1D:
+        raise_error(loader_errorstr_1D)
+
+        .encoding "petscii_upper"
+loader_errorstr_00:
+        .text "Disk load error"
+        .byte $00
+loader_errorstr_04:
+        .text "File not found"
+        .byte $00
+loader_errorstr_05:
+        .text "Device not present"
+        .byte $00
+loader_errorstr_1D:
+        .text "Load error"
+        .byte $00
+loader_errorstr_unknown:
+        .text "Unknown error"
+        .byte $00

@@ -14,7 +14,7 @@ lz77_error_01:
 lz77_error_02:
         raise_error(lz77_errorstr_02)
 
-        .encoding "screencode_upper"
+        .encoding "petscii_upper"
 lz77_errorstr_01:
         .text "NOT A GBA-LZ77 STREAM"
         .byte $00

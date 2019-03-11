@@ -93,7 +93,7 @@ player_update_handle_exit:
 player_update_end:
         rts
 
-        .encoding "screencode_upper"
+        .encoding "petscii_upper"
 player_error_01:
-        .text "UNIMPLEMENTED"
+        .text "Unimplemented"
         .byte $00
