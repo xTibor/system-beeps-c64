@@ -11,16 +11,16 @@ lz77_text_data:
 
 init:
         lda #$00
-        sta $d020
-        sta $d021
+        sta $D020
+        sta $D021
 
         ldx #$00
 !:
         lda #$0F
-        sta mem.color_data + $0000, x
-        sta mem.color_data + $0100, x
-        sta mem.color_data + $0200, x
-        sta mem.color_data + $0300, x
+        sta mem.color_ram + $0000, x
+        sta mem.color_ram + $0100, x
+        sta mem.color_ram + $0200, x
+        sta mem.color_ram + $0300, x
         inx
         bne !-
 
@@ -34,18 +34,18 @@ init:
 
         lda #<lz77_font_data;  sta lz77.source
         lda #>lz77_font_data;  sta lz77.source + 1
-        lda #<mem.raw_font_data;  sta lz77.target
-        lda #>mem.raw_font_data;  sta lz77.target + 1
+        lda #<mem.font_ram;  sta lz77.target
+        lda #>mem.font_ram;  sta lz77.target + 1
         jsr lz77.decompress
 
         lda #<lz77_text_data;  sta lz77.source
         lda #>lz77_text_data;  sta lz77.source + 1
-        lda #<mem.raw_text_data;  sta lz77.target
-        lda #>mem.raw_text_data;  sta lz77.target + 1
+        lda #<mem.text_ram;  sta lz77.target
+        lda #>mem.text_ram;  sta lz77.target + 1
         jsr lz77.decompress
 
         lda #$0E // Note symbol
-        sta mem.raw_text_data + 40 * 2 + 4
+        sta mem.text_ram + 40 * 2 + 4
 
         rts
 

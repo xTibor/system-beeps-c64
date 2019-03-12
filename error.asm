@@ -25,16 +25,16 @@ do_raise_error:
 !loop:
         // Fill screen RAM with spaces
         lda #$20
-        sta mem.raw_text_data + $0000, x
-        sta mem.raw_text_data + $0100, x
-        sta mem.raw_text_data + $0200, x
-        sta mem.raw_text_data + $0300, x
+        sta mem.text_ram + $0000, x
+        sta mem.text_ram + $0100, x
+        sta mem.text_ram + $0200, x
+        sta mem.text_ram + $0300, x
         // Fill color RAM with red
         lda #$02
-        sta mem.color_data + $0000, x
-        sta mem.color_data + $0100, x
-        sta mem.color_data + $0200, x
-        sta mem.color_data + $0300, x
+        sta mem.color_ram + $0000, x
+        sta mem.color_ram + $0100, x
+        sta mem.color_ram + $0200, x
+        sta mem.color_ram + $0300, x
         inx
         bne !loop-
 
@@ -43,7 +43,7 @@ do_raise_error:
 !loop:
         lda (string), y
         beq !halt+
-        sta mem.raw_text_data, y
+        sta mem.text_ram, y
         iny
         jmp !loop-
 

@@ -67,10 +67,10 @@ load:
         jsr $FFD5     // Call LOAD
         bcs !handle_error+   // If carry set, a load error has happened
 
-        lda #<mem.lz77_song_data;  sta lz77.source
-        lda #>mem.lz77_song_data;  sta lz77.source + 1
-        lda #<mem.raw_song_data;   sta lz77.target
-        lda #>mem.raw_song_data;   sta lz77.target + 1
+        lda #<mem.song_lz77;  sta lz77.source
+        lda #>mem.song_lz77;  sta lz77.source + 1
+        lda #<mem.song_bin;   sta lz77.target
+        lda #>mem.song_bin;   sta lz77.target + 1
         jsr lz77.decompress
 
         rts

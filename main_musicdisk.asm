@@ -12,7 +12,7 @@
 start:
         jsr playlist.init
 
-        lda #$04
+        lda #$00
         sta loader.song_id
         jsr loader.load
 

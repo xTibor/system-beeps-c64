@@ -10,8 +10,8 @@
         .label loop_position = $14
 
 init:
-        lda #<mem.raw_song_data;  sta position
-        lda #>mem.raw_song_data;  sta position + 1
+        lda #<mem.song_bin;  sta position
+        lda #>mem.song_bin;  sta position + 1
 
         lda #$00
         sta wait
@@ -60,9 +60,9 @@ update_step:
         lda #$41
         sta $D404
         lda #$00
-        sta $d402
+        sta $D402
         lda #$08
-        sta $d403
+        sta $D403
 
         // Master volume to max
         lda #$0F

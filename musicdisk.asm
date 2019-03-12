@@ -3,95 +3,95 @@ BasicUpstart2(main.start)
 #import "main_musicdisk.asm"
 
 .segment SONG_SYS []
-* = mem.lz77_song_data
+* = mem.song_lz77 "System Beeps"
 .import binary "res/songs-sid/sys.lz77"
 
 .segment SONG_TMB []
-* = mem.lz77_song_data
+* = mem.song_lz77 "Too Many Bits"
 .import binary "res/songs-sid/tmb.lz77"
 
 .segment SONG_BTL []
-* = mem.lz77_song_data
+* = mem.song_lz77 "Battery Low"
 .import binary "res/songs-sid/btl.lz77"
 
 .segment SONG_MNC []
-* = mem.lz77_song_data
+* = mem.song_lz77 "Monoculear"
 .import binary "res/songs-sid/mnc.lz77"
 
 .segment SONG_HST []
-* = mem.lz77_song_data
+* = mem.song_lz77 "Head Step"
 .import binary "res/songs-sid/hst.lz77"
 
 .segment SONG_BAD []
-* = mem.lz77_song_data
+* = mem.song_lz77 "Bad Sector"
 .import binary "res/songs-sid/bad.lz77"
 
 .segment SONG_DLD []
-* = mem.lz77_song_data
+* = mem.song_lz77 "Dial-Down"
 .import binary "res/songs-sid/dld.lz77"
 
 .segment SONG_HSH []
-* = mem.lz77_song_data
+* = mem.song_lz77 "Handshake"
 .import binary "res/songs-sid/hsh.lz77"
 
 .segment SONG_FLO []
-* = mem.lz77_song_data
+* = mem.song_lz77 "Floppy Flips"
 .import binary "res/songs-sid/flo.lz77"
 
 .segment SONG_PXL []
-* = mem.lz77_song_data
+* = mem.song_lz77 "Pixel Rain"
 .import binary "res/songs-sid/pxl.lz77"
 
 .segment SONG_SSD []
-* = mem.lz77_song_data
+* = mem.song_lz77 "Single-Sided Drive"
 .import binary "res/songs-sid/ssd.lz77"
 
 .segment SONG_LED []
-* = mem.lz77_song_data
+* = mem.song_lz77 "Twinkle LED"
 .import binary "res/songs-sid/led.lz77"
 
 .segment SONG_CLO []
-* = mem.lz77_song_data
+* = mem.song_lz77 "Clocking Ticks"
 .import binary "res/songs-sid/clo.lz77"
 
 .segment SONG_TXR []
-* = mem.lz77_song_data
+* = mem.song_lz77 "TX/RX"
 .import binary "res/songs-sid/txr.lz77"
 
 .segment SONG_SRV []
-* = mem.lz77_song_data
+* = mem.song_lz77 "Serverside"
 .import binary "res/songs-sid/srv.lz77"
 
 .segment SONG_STF []
-* = mem.lz77_song_data
+* = mem.song_lz77 "Staff Roll"
 .import binary "res/songs-sid/stf.lz77"
 
 .segment SONG_ASF []
-* = mem.lz77_song_data
+* = mem.song_lz77 "Astro Force"
 .import binary "res/songs-sid/asf.lz77"
 
 .segment SONG_RUN []
-* = mem.lz77_song_data
+* = mem.song_lz77 "Run Under Fire"
 .import binary "res/songs-sid/run.lz77"
 
 .segment SONG_MYM []
-* = mem.lz77_song_data
+* = mem.song_lz77 "My Mission"
 .import binary "res/songs-sid/mym.lz77"
 
 .segment SONG_SQW []
-* = mem.lz77_song_data
+* = mem.song_lz77 "Square Wave"
 .import binary "res/songs-sid/sqw.lz77"
 
 .segment SONG_FIN []
-* = mem.lz77_song_data
+* = mem.song_lz77 "Final Stretch"
 .import binary "res/songs-sid/fin.lz77"
 
 .segment SONG_COY []
-* = mem.lz77_song_data
+* = mem.song_lz77 "Coming Year"
 .import binary "res/songs-sid/coy.lz77"
 
 .segment SONG_AON []
-* = mem.lz77_song_data
+* = mem.song_lz77 "AONDEMO Soundtrack"
 .import binary "res/songs-sid/aon.lz77"
 
 .disk [filename="musicdisk.d64", name="SYSTEM BEEPS", id="2021!" ] {
