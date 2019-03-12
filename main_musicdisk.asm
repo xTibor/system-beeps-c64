@@ -3,15 +3,14 @@
 
         #import "irq.asm"
         #import "loader.asm"
+        #import "menu.asm"
         #import "player.asm"
-        #import "playlist.asm"
 
         .filenamespace main
 start:
-        jsr playlist.init
+        jsr menu.init
 
         lda #$00
-        sta loader.song_id
         jsr loader.load
 
         jsr player.init

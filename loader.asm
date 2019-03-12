@@ -1,12 +1,13 @@
         #importonce
         #import "error.asm"
+        #import "kernal.asm"
         #import "lz77.asm"
         #import "mem.asm"
 
         .filenamespace loader
 
         .encoding "petscii_upper"
-song_disk_names:
+filenames:
         .text "SYS"
         .text "TMB"
         .text "BTL"
@@ -31,26 +32,27 @@ song_disk_names:
         .text "COY"
         .text "AON"
 
-song_id:
+filename_offset:
         .byte $00
 
+        // A = song_id
 load:
         // Set filename
         // Multiplication is kept as an u8, so the max ID it can handle is 85
-        lda song_id
+        sta filename_offset
         clc
-        adc song_id
+        adc filename_offset
         clc
-        adc song_id
-        adc #<song_disk_names
-        tax  // X = (song_id * 3) + #<song_disk_names
+        adc filename_offset  // filename_offset = song_id * 3
+        adc #<filenames
+        tax  // X = #<filenames + filename_offset
 
-        lda #>song_disk_names
+        lda #>filenames
         adc #$00
-        tay  // Y = #>song_disk_names + carry
+        tay  // Y = #>filenames + carry from above
 
         lda #$03  // Set filename length
-        jsr $FFBD     // Call SETNAM
+        jsr kernal.setnam
 
         //
         lda #$01
@@ -61,10 +63,10 @@ load:
 
 
         ldy #$01      // not $01 means: load to address stored in file
-        jsr $FFBA     // Call SETLFS
+        jsr kernal.setlfs
 
         lda #$00      // Load to memory (not verify)
-        jsr $FFD5     // Call LOAD
+        jsr kernal.load
         bcs !handle_error+   // If carry set, a load error has happened
 
         lda #<mem.song_lz77;  sta lz77.source

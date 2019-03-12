@@ -79,7 +79,7 @@ handler:
         sta $D012
         lda scanline_hi, x
         ora #$1B
-        sta $D011
+        sta $D011 // TODO: Don't trash this register
 
         pla
         tay

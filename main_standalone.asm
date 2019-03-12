@@ -15,4 +15,4 @@ start:
 start_end:
 
         * = mem.song_bin
-        .import binary "res/songs-sid/aon.bin"
+        .import binary "res/songs-sid/sys.bin"

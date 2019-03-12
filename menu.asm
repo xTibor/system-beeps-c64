@@ -2,12 +2,12 @@
         #import "lz77.asm"
         #import "mem.asm"
 
-        .filenamespace playlist
+        .filenamespace menu
 
 font_lz77:
         .import binary "res/fonts/cga-font.lz77"
 text_lz77:
-        .import binary "res/texts/playlist.lz77"
+        .import binary "res/texts/menu.lz77"
 
 init:
         lda #$00
