@@ -1,6 +1,6 @@
         #importonce
-        #import "lz77.asm"
         #import "error.asm"
+        #import "lz77.asm"
         #import "mem.asm"
 
         .filenamespace loader
@@ -43,7 +43,7 @@ load:
         clc
         adc song_id
         adc #<song_disk_names
-        tax  // X = (sond_id * 3) + #<song_disk_names
+        tax  // X = (song_id * 3) + #<song_disk_names
 
         lda #>song_disk_names
         adc #$00

@@ -4,9 +4,9 @@
 
         .filenamespace playlist
 
-lz77_font_data:
+font_lz77:
         .import binary "res/fonts/cga-font.lz77"
-lz77_text_data:
+text_lz77:
         .import binary "res/texts/playlist.lz77"
 
 init:
@@ -32,14 +32,14 @@ init:
         lda #$20
         sta $D018
 
-        lda #<lz77_font_data;  sta lz77.source
-        lda #>lz77_font_data;  sta lz77.source + 1
+        lda #<font_lz77;  sta lz77.source
+        lda #>font_lz77;  sta lz77.source + 1
         lda #<mem.font_ram;  sta lz77.target
         lda #>mem.font_ram;  sta lz77.target + 1
         jsr lz77.decompress
 
-        lda #<lz77_text_data;  sta lz77.source
-        lda #>lz77_text_data;  sta lz77.source + 1
+        lda #<text_lz77;  sta lz77.source
+        lda #>text_lz77;  sta lz77.source + 1
         lda #<mem.text_ram;  sta lz77.target
         lda #>mem.text_ram;  sta lz77.target + 1
         jsr lz77.decompress
@@ -48,4 +48,3 @@ init:
         sta mem.text_ram + 40 * 2 + 4
 
         rts
-

@@ -1,14 +1,12 @@
         #importonce
-        #import "macros.asm"
+        #define MUSICDISK
+
         #import "irq.asm"
-        #import "error.asm"
-        #import "player.asm"
-        #import "lz77.asm"
-        #import "playlist.asm"
         #import "loader.asm"
+        #import "player.asm"
+        #import "playlist.asm"
 
         .filenamespace main
-
 start:
         jsr playlist.init
 
@@ -19,3 +17,6 @@ start:
         jsr player.init
         jsr irq.init
         jmp *
+
+        .align $0100
+start_end:

@@ -57,7 +57,6 @@ handler:
         // Clear the interrupt condition
         lda #$FF
         sta $D019
-        // ---
 
         lda #$0B
         sta $D020
@@ -81,7 +80,6 @@ handler:
         lda scanline_hi, x
         ora #$1B
         sta $D011
-        // ---
 
         pla
         tay
