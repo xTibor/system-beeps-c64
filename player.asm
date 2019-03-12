@@ -19,6 +19,25 @@ init:
         sta loop_position
         sta loop_position + 1
 
+        // Set SID registers
+        // ADSR
+        lda #$00
+        sta $D405
+        lda #$F0
+        sta $D406
+
+        // Square wave with 50% duty
+        lda #$41
+        sta $D404
+        lda #$00
+        sta $D402
+        lda #$08
+        sta $D403
+
+        // Master volume to max
+        lda #$0F
+        sta $D418
+
         rts
 
 update:
@@ -49,25 +68,6 @@ update_step:
         sta $D401
         inc16(position)
 
-        // Set SID registers
-        // ADSR
-        lda #$00
-        sta $D405
-        lda #$F0
-        sta $D406
-
-        // Square wave with 50% duty
-        lda #$41
-        sta $D404
-        lda #$00
-        sta $D402
-        lda #$08
-        sta $D403
-
-        // Master volume to max
-        lda #$0F
-        sta $D418
-        // ---
         rts
 
 update_handle_loop:
@@ -93,7 +93,6 @@ update_set_loop:
 update_handle_exit:
         // TODO
         //raise_error(error_01)
-        // ---
         rts
 
 update_end:
