@@ -16,15 +16,9 @@
         .label reference_start = $2C
 
 error_01:
-        raise_error(errorstr_01)
+        raise_error("Not a GBA-LZ77 compressed stream")
 error_02:
-        raise_error(errorstr_02)
-
-        .encoding "petscii_upper"
-errorstr_01:
-        .text @"NOT A GBA-LZ77 STREAM\$00"
-errorstr_02:
-        .text @"SIZE GREATER THAN $FFFF\$00"
+        raise_error("Decompressed size larger than $FFFF")
 
 decompress:
         ldy #$00
@@ -104,14 +98,14 @@ process_reference:
         sta reference_start + 1
 
         // Copy the reference
-!:
+!loop:
         lda (reference_start), y
         inc16(reference_start)
         sta (target), y
         inc16(target)
         dec16(decompressed_size)   // TODO: Before the loop: decompressed_size -= reference_length
         dec reference_length
-        bne !-
+        bne !loop-
 
 process_block_loop_next:
         lda #$00

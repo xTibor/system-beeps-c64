@@ -37,7 +37,7 @@ filename_offset:
 
         // A = song_id
 load:
-        // Set filename
+        // Call kernal.setnam
         // Multiplication is kept as an u8, so the max ID it can handle is 85
         sta filename_offset
         clc
@@ -51,60 +51,48 @@ load:
         adc #$00
         tay  // Y = #>filenames + carry from above
 
-        lda #$03  // Set filename length
+        lda #$03  // Filename length
         jsr kernal.setnam
 
-        //
+        // Call kernal.setlfs
         lda #$01
         ldx $BA       // Last used device number
         bne !skip+
         ldx #$08      // Default to device 8
 !skip:
-
-
         ldy #$01      // not $01 means: load to address stored in file
         jsr kernal.setlfs
 
+        // Call kernal.load
         lda #$00      // Load to memory (not verify)
         jsr kernal.load
-        bcs !handle_error+   // If carry set, a load error has happened
+        bcs !load_error+
 
+        // Decompression
         lda #<mem.song_lz77;  sta lz77.source
         lda #>mem.song_lz77;  sta lz77.source + 1
-        lda #<mem.song_bin;   sta lz77.target
-        lda #>mem.song_bin;   sta lz77.target + 1
+        lda #<mem.song_bin;  sta lz77.target
+        lda #>mem.song_bin;  sta lz77.target + 1
         jsr lz77.decompress
 
         rts
 
-!handle_error:
+!load_error:
         cmp #$00
-        beq error_00
+        beq load_error_00
         cmp #$04
-        beq error_04
+        beq load_error_04
         cmp #$05
-        beq error_05
+        beq load_error_05
         cmp #$1D
-        beq error_1D
-        raise_error(errorstr_unknown)
+        beq load_error_1D
+        raise_error("Unknown error")
 
-error_00:
-        raise_error(errorstr_00)
-error_04:
-        raise_error(errorstr_04)
-error_05:
-        raise_error(errorstr_05)
-error_1D:
-        raise_error(errorstr_1D)
-
-        .encoding "petscii_upper"
-errorstr_00:
-        .text @"Disk load error\$00"
-errorstr_04:
-        .text @"File not found\$00"
-errorstr_05:
-        .text @"Device not present\$00"
-errorstr_1D:
-        .text @"Load error\$00"
-errorstr_unknown:
-        .text @"Unknown error\$00"
+load_error_00:
+        raise_error("Disk load error")
+load_error_04:
+        raise_error("File not found")
+load_error_05:
+        raise_error("Device not present")
+load_error_1D:
+        raise_error("Load error")

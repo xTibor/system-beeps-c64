@@ -1,11 +1,14 @@
         #importonce
         #import "mem.asm"
 
-        // TODO: Move this under the error namespace
-.macro raise_error(arg_str) {
-        lda #<arg_str;  sta error.string
-        lda #>arg_str;  sta error.string + 1
+.macro raise_error(arg_message) {
+        lda #<!message+;  sta error.string
+        lda #>!message+;  sta error.string + 1
         jsr error.do_raise_error
+!message:
+        .encoding "petscii_upper"
+        .text arg_message
+        .byte $00
 }
 
         .filenamespace error
