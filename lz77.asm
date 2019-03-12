@@ -88,14 +88,8 @@ process_reference:
         sta reference_offset
         inc16(reference_offset)
 
-        // Calculate start address of reference
-        sec
-        lda target
-        sbc reference_offset
-        sta reference_start
-        lda target + 1
-        sbc reference_offset + 1
-        sta reference_start + 1
+        sub16(reference_start, target, reference_offset)
+        sub16(decompressed_size, decompressed_size, reference_length)
 
         // Copy the reference
 !loop:
@@ -103,7 +97,6 @@ process_reference:
         inc16(reference_start)
         sta (target), y
         inc16(target)
-        dec16(decompressed_size)   // TODO: Before the loop: decompressed_size -= reference_length
         dec reference_length
         bne !loop-
 

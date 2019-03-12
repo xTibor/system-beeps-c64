@@ -9,6 +9,8 @@ font_lz77:
 text_lz77:
         .import binary "res/texts/menu.lz77"
 
+
+
 init:
         lda #$00
         sta $D020

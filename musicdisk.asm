@@ -1,5 +1,4 @@
 .segment MAIN []
-BasicUpstart2(main.start)
 #import "main_musicdisk.asm"
 
 .segment SONG_SYS []

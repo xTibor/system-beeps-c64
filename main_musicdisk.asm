@@ -1,5 +1,6 @@
         #importonce
         #define MUSICDISK
+        BasicUpstart2(main.start)
 
         #import "irq.asm"
         #import "loader.asm"

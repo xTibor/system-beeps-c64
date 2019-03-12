@@ -12,4 +12,7 @@
 #elif STANDALONE
         #import "main_standalone.asm"
         .label song_bin = main.start_end
+        // The lack of {font,text,color}_ram symbols here ensures that
+        // the musicdisk specific parts are not assembled in by accident
+        // in standalone mode.
 #endif
