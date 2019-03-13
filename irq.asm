@@ -33,16 +33,22 @@ init:
         lda #$1B
         sta $D011
 
-        // Unmap BASIC and KERNAL (TODO: before decompression)
-        lda #$35
-        sta $01
-
         // Set interrupt address
-        lda #<handler;  sta $FFFE
-        lda #>handler;  sta $FFFF
+        lda #<handler;  sta $0314
+        lda #>handler;  sta $0315
 
         lda #$00
         sta scanline_index
+
+        cli
+        rts
+
+fini:
+        sei
+
+        // Disable raster interrupts
+        lda #$00
+        sta $D01A
 
         cli
         rts
@@ -86,4 +92,6 @@ handler:
         pla
         tax
         pla
-        rti
+
+        // Back to the KERNAL interrupt handler
+        jmp $EA31

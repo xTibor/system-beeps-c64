@@ -40,6 +40,13 @@ init:
 
         rts
 
+fini:
+        // Master volume to zero
+        lda #$00
+        sta $D418
+        // TODO: More thorough finalization
+        rts
+
 update:
         lda wait
         cmp #$00

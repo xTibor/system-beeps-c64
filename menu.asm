@@ -3,6 +3,8 @@
         #import "lz77.asm"
         #import "mem.asm"
         #import "loader.asm"
+        #import "player.asm"
+        #import "irq.asm"
 
         .filenamespace menu
 
@@ -147,6 +149,9 @@ event_moveup:
         jmp eventloop
 
 event_load:
+        jsr irq.fini
+        jsr player.fini
+
         ldy #marker_none
         jsr set_marker_shape
 
@@ -162,7 +167,12 @@ event_load:
         ldy #marker_playing
         jsr set_marker_shape
 
+        jsr player.init
+        jsr irq.init
+
         jmp eventloop
 
 event_exit:
+        jsr irq.fini
+        jsr player.fini
         rts
