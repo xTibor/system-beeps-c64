@@ -45,10 +45,15 @@ init:
         rts
 
 fini:
-        // Master volume to zero
         lda #$00
+        sta $D400
+        sta $D401
+        sta $D402
+        sta $D403
+        sta $D404
+        sta $D405
+        sta $D406
         sta $D418
-        // TODO: More thorough finalization
         rts
 
 update:
@@ -103,7 +108,7 @@ update_set_loop:
 
 update_handle_exit:
         // TODO
-        //raise_error(error_01)
+        //raise_error("Unimplemented")
         rts
 
 update_end:

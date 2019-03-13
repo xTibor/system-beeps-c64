@@ -48,5 +48,6 @@ addr:   lda $0000, y
         iny
         jmp !loop-
 
+        // TODO: Reset after keypress
 !halt:
         jmp *

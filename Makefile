@@ -1,6 +1,5 @@
-KICKASS=~/git/kickass/kickass.jar
-EMULATOR=~/Downloads/C64Debugger
-#EMULATOR=x64
+KICKASS?=~/git/kickass/kickass.jar
+EMULATOR?=x64
 
 PIT_BINS := $(wildcard res/songs-pit/*.bin)
 SID_BINS := $(patsubst res/songs-pit/%.bin, res/songs-sid/%.bin, $(PIT_BINS))
@@ -45,3 +44,4 @@ clean:
 	rm $(FONT_64CS)
 	rm $(FONT_64CS_LZ77)
 	rm $(TEXT_BINS_LZ77)
+	cargo clean --manifest-path ./tools/Cargo.toml
