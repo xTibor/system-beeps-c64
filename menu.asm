@@ -1,6 +1,8 @@
         #importonce
+        #import "kernal.asm"
         #import "lz77.asm"
         #import "mem.asm"
+        #import "loader.asm"
 
         .filenamespace menu
 
@@ -60,23 +62,11 @@ init:
         sta item_selected
         sta item_playing
 
-        ldy #marker_playing
+        ldy #marker_none
         jsr set_marker_shape
 
         ldy #color_selected
         jsr set_selection_color
-
-        //ldy #marker_none
-        //jsr set_marker_shape
-        //inc item_playing
-        //ldy #marker_playing
-        //jsr set_marker_shape
-
-        //ldy #color_normal
-        //jsr set_selection_color
-        //inc item_selected
-        //ldy #color_selected
-        //jsr set_selection_color
 
         rts
 
@@ -114,4 +104,65 @@ set_selection_color:
 !addr:  sta.abs $0000, x
         dex
         bpl !loop-
+        rts
+
+eventloop:
+        jsr kernal.getin
+        cmp #$00
+        beq eventloop
+        cmp #$11
+        beq event_movedown
+        cmp #$91
+        beq event_moveup
+        cmp #$0D
+        beq event_load
+        cmp #$03
+        beq event_exit
+        jmp eventloop
+
+event_movedown:
+        ldy #color_normal
+        jsr set_selection_color
+        inc item_selected
+        lda item_selected
+        cmp #23
+        bne !no_wraparound+
+        lda #$00
+        sta item_selected
+!no_wraparound:
+        ldy #color_selected
+        jsr set_selection_color
+        jmp eventloop
+
+event_moveup:
+        ldy #color_normal
+        jsr set_selection_color
+        dec item_selected
+        bpl !no_wraparound+
+        lda #22
+        sta item_selected
+!no_wraparound:
+        ldy #color_selected
+        jsr set_selection_color
+        jmp eventloop
+
+event_load:
+        ldy #marker_none
+        jsr set_marker_shape
+
+        lda item_selected
+        sta item_playing
+
+        ldy #marker_loading
+        jsr set_marker_shape
+
+        lda item_playing
+        jsr loader.load
+
+        ldy #marker_playing
+        jsr set_marker_shape
+
+        jmp eventloop
+
+event_exit:
         rts

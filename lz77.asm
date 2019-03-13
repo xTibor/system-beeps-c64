@@ -90,6 +90,7 @@ process_reference:
 
         sub16(reference_start, target, reference_offset)
         sub16(decompressed_size, decompressed_size, reference_length)
+        // TODO: decompressed_size underflow check
 
         // Copy the reference
 !loop:

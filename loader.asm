@@ -37,6 +37,8 @@ filename_offset:
 
         // A = song_id
 load:
+        // TODO: Clear mem.song_lz77 and mem.song_bin
+
         // Call kernal.setnam
         // Multiplication is kept as an u8, so the max ID it can handle is 85
         sta filename_offset

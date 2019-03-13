@@ -3,19 +3,20 @@
         BasicUpstart2(main.start)
 
         #import "irq.asm"
-        #import "loader.asm"
+
         #import "menu.asm"
         #import "player.asm"
 
         .filenamespace main
 start:
         jsr menu.init
+        //jsr player.init
+        //jsr irq.init
+        jsr menu.eventloop
 
-        lda #$00
-        jsr loader.load
-
-        jsr player.init
-        jsr irq.init
+        // TODO: Reset the machine
+        lda #$03
+        sta $D020
         jmp *
 
         .align $0100
