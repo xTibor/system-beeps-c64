@@ -4,10 +4,14 @@
 
         .filenamespace player
 
-        .label position = $10
-        .label wait = $12
-        .label loop_found = $13
-        .label loop_position = $14
+        .label position = $05
+
+wait:
+        .byte $00
+loop_found:
+        .byte $00
+loop_position:
+        .word $0000
 
 init:
         lda #<mem.song_bin;  sta position

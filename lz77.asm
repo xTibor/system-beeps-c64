@@ -4,16 +4,20 @@
 
         .filenamespace lz77
 
-        .label source = $20
-        .label target = $22
+        .label source = $FB
+        .label target = $FD
+        .label reference_start = $03
 
-        .label decompressed_size = $24
-        .label block_header = $26
-        .label block_remaining_bits = $27
-
-        .label reference_length = $28
-        .label reference_offset = $2A
-        .label reference_start = $2C
+decompressed_size:
+        .word $0000
+block_header:
+        .byte $00
+block_remaining_bits:
+        .byte $00
+reference_length:
+        .word $0000
+reference_offset:
+        .word $0000
 
 error_01:
         raise_error("Not a GBA-LZ77 compressed stream")

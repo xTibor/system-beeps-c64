@@ -9,7 +9,7 @@
 start:
         jsr menu.init
         jsr menu.eventloop
-        raise_error("TODO: RESET the machine here")
+        jmp $FFFC
 
         .align $0100
 start_end:

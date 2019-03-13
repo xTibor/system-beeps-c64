@@ -3,8 +3,8 @@
 
         .filenamespace irq
 
-        .label scanline_index = $08
-
+scanline_index:
+        .byte $00
 scanline_lo:
         .byte $00, $82, $04, $4E, $D0, $1A, $9C, $1E, $68, $EA, $34, $B6
 scanline_hi:

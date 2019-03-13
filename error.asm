@@ -2,8 +2,8 @@
         #import "mem.asm"
 
 .macro raise_error(arg_message) {
-        lda #<!message+;  sta error.string
-        lda #>!message+;  sta error.string + 1
+        lda #<!message+;  sta error.addr + 1
+        lda #>!message+;  sta error.addr + 2
         jsr error.do_raise_error
 !message:
         .encoding "petscii_upper"
@@ -12,8 +12,6 @@
 }
 
         .filenamespace error
-
-        .label string = $18
 
 do_raise_error:
         // Set red border
@@ -44,7 +42,7 @@ do_raise_error:
         // Print error message
         ldy #$00
 !loop:
-        lda (string), y
+addr:   lda $0000, y
         beq !halt+
         sta mem.text_ram, y
         iny
