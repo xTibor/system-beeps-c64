@@ -12,6 +12,10 @@ text_lz77:
         .const color_selected = $01
         .const color_normal = $0F
 
+        .const marker_none = $20
+        .const marker_loading = $AF
+        .const marker_playing = $0E
+
 item_selected:
         .byte $00
 item_playing:
@@ -55,16 +59,24 @@ init:
         lda #$00
         sta item_selected
         sta item_playing
-        jsr set_playing_marker
-        jsr set_selection
 
-        //jsr clear_playing_marker
+        ldy #marker_playing
+        jsr set_marker_shape
+
+        ldy #color_selected
+        jsr set_selection_color
+
+        //ldy #marker_none
+        //jsr set_marker_shape
         //inc item_playing
-        //jsr set_playing_marker
+        //ldy #marker_playing
+        //jsr set_marker_shape
 
-        //jsr clear_selection
+        //ldy #color_normal
+        //jsr set_selection_color
         //inc item_selected
-        //jsr set_selection
+        //ldy #color_selected
+        //jsr set_selection_color
 
         rts
 
@@ -77,36 +89,27 @@ item_color_offset_lo:
 item_color_offset_hi:
         .fill 23, >(mem.color_ram + 40 * (i + 2) + 4)
 
-        // Clobbers A, X, Y
-clear_playing_marker:
-        ldy #$20  // Space
-        jmp !draw+
-set_playing_marker:
-        ldy #$0E  // Note character
-!draw:
+        // Y = marker character
+        // Clobbers A, X  // TODO: flags it clobbers
+set_marker_shape:
         ldx item_playing
         lda item_text_offset_lo, x
         sta !addr+ + 1
         lda item_text_offset_hi, x
         sta !addr+ + 2
-        tya
-!addr:  sta.abs $0000
+!addr:  sty.abs $0000
         rts
 
-        // Clobbers A, X, Y
-clear_selection:
-        ldy #color_normal
-        jmp !draw+
-set_selection:
-        ldy #color_selected
-!draw:
+        // Y = selection color
+        // Clobbers A, X, Y  // TODO: flags it clobbers
+set_selection_color:
         ldx item_selected
         lda item_color_offset_lo, x
         sta !addr+ + 1
         lda item_color_offset_hi, x
         sta !addr+ + 2
         tya
-        ldx #35  // Item width
+        ldx #35  // Selection width
 !loop:
 !addr:  sta.abs $0000, x
         dex
